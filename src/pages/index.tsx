@@ -6,8 +6,9 @@ import type { NextPage } from "next";
 
 const Home: NextPage = () => {
   return (
-    <div className="bg-slate-400 py-20 px-20 grid gap-10">
-    <div className="bg-white p-6 rounded-3xl shadow-xl">
+  
+    <div className="bg-slate-400 bg-[url('/vercel.svg')] xl:place-content-center py-20 px-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen">
+    <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-xl">
       <span className="font-semibold text-3xl">Select Item</span>
       <div className="flex justify-between my-2">
         <span className="text-gray-500">Grey Chair</span>
@@ -32,8 +33,8 @@ const Home: NextPage = () => {
         Checkout
       </button>
     </div>
-    <div className="bg-white overflow-hidden rounded-3xl shadow-xl">
-      <div className="bg-blue-500 p-6 pb-14">
+    <div className="bg-white overflow-hidden rounded-3xl shadow-xl group">
+      <div className="portrait:bg-emerald-950 landscape:bg-violet-700 p-6 pb-14">
         <span className="text-white text-2xl">Profile</span>
       </div>
       <div className="rounded-3xl p-6 bg-white relative -top-5">
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
             <span className="text-sm text-gray-500">Orders</span>
             <span className="font-medium">340</span>
           </div>
-          <div className="h-24 w-24 bg-red-400 rounded-full" />
+          <div className="h-24 w-24 bg-red-400 rounded-full group-hover:bg-yellow-100" />
           <div className="flex flex-col items-center">
             <span className="text-sm text-gray-500">Spent</span>
             <span className="font-medium">$340</span>
@@ -54,7 +55,7 @@ const Home: NextPage = () => {
         </div>
       </div>
     </div>
-    <div className="bg-white p-6 rounded-3xl shadow-xl">
+    <div className="bg-white p-6 rounded-3xl shadow-xl lg:col-span-2 xl:col-span-1">
         <div className="flex mb-5 justify-between items-center">
           <span>⬅️</span>
           <div className="space-x-3">
@@ -62,7 +63,7 @@ const Home: NextPage = () => {
             <span className="shadow-xl p-2 rounded-md">💖</span>
           </div>
         </div>
-        <div className="bg-zinc-400 h-72 mb-5" />
+        <div className="bg-zinc-300 h-72 mb-5" />
         <div className="flex flex-col">
           <span className="font-medium text-xl">Swoon Lounge</span>
           <span className="text-xs text-gray-500">Chair</span>
@@ -91,6 +92,7 @@ const Home: NextPage = () => {
         </div>
       </div>
     </div>
+    
   );
 }
 
