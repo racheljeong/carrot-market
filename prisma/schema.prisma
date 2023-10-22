@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id Int @id @default(autoincrement())
+  phone Int? @unique
+  email String? @unique
+  name String
+  avatar String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //User model에 id 부여: @id로 모델의 id임을 알림(unique key)
+  //유저는 phone | email 둘 중 하나를 통해 로그인이 가능하므로 둘다 optional
+  //아바타는 처음에는 undefined 값이었다가 유저에 따라 생성될 수도 있는 값
+  //now() 생성된 시점의 시각을 가져와 넣어주는 함수
+  //@updatedAt : 업데이트 될때마다 해당 필드가 변할것이라는것을 프리즈마에게 알림
+}
