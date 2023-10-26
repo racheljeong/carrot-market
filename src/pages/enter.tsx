@@ -2,12 +2,53 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import Button from "../components/button";
 import Input from "../components/input";
-import { cls } from "../libs/utils";
+import { cls } from "../libs/client/utils";
+import { useForm } from "react-hook-form";
+import useMutation from "@/libs/client/useMutation";
+
+interface EnterForm {
+  email? : string;
+  phone? : string;
+}
 
 const Enter: NextPage = () => {
+//1. be에서 post fetch 할 func == 데이터상태를 변화시킴 == mutation
+//enter func = mutation을 작동시킬 function (trigger func for mutation)
+
+  const [enter, {loading, data, error}] = useMutation("/api/users/enter");
   const [method, setMethod] = useState<"email" | "phone">("email");
-  const onEmailClick = () => setMethod("email");
-  const onPhoneClick = () => setMethod("phone");
+  const [submitting, setSubmitting] = useState(false);
+  
+  const onEmailClick = () => {
+    reset();
+    setMethod("email");
+  };
+
+    const onPhoneClick = () => {
+      reset();
+      setMethod("phone");
+  };
+
+  console.log(loading, data, error);
+
+  const {register, reset, handleSubmit} = useForm<EnterForm>();
+  
+  const onValid = (validForm : EnterForm) => {
+    console.log(validForm);
+    setSubmitting(true);
+
+    fetch("/api/users/enter", {
+      method : "POST",
+      body : JSON.stringify(data),
+      headers : {
+        "Content-type" : "application/json",
+      },
+     
+    }).then(() => {
+      setSubmitting(false);
+    });
+  };
+
   return (
     <div className="mt-16 px-4">
       <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
@@ -39,22 +80,35 @@ const Enter: NextPage = () => {
             </button>
           </div>
         </div>
-        <form className="flex flex-col mt-8 space-y-4">
+        <form 
+          onSubmit={handleSubmit(onValid)}
+          className="flex flex-col mt-8 space-y-4">
           {method === "email" ? (
-            <Input name="email" label="Email address" type="email" required />
+            <Input 
+              register={register("email", {required : true})} 
+              name="email" 
+              label="Email address" 
+              type="email" 
+               />
           ) : null}
+          {/* 평소처럼 {...register} 라고 보낼수없음 -> 보낼곳이 없음
+          register 사용시 해당 input관련 event listener이 생성됨
+          이번에는 register의 내용을 동일한 이름의 다른 prop에 넣어줄거임 
+          register()이 실행되면 그 값은 register prop으로 들어감
+          register를 input 컴포넌트에 보냄 -> 컴포넌트 내부의 input에서 사용중 */}
           {method === "phone" ? (
             <Input
+              register={register("phone", {required : true})}
               name="phone"
               label="Phone number"
               type="number"
               kind="phone"
-              required
+              
             />
           ) : null}
           {method === "email" ? <Button text={"Get login link"} /> : null}
           {method === "phone" ? (
-            <Button text={"Get one-time password"} />
+            <Button text={submitting ? "Loading" : "Get one-time password"} />
           ) : null}
         </form>
 
